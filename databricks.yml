@@ -58,8 +58,6 @@ targets:
       config_path: ${workspace.file_path}/configs
       catalog: eun_dev_906_dh_data_db
       datahub_alert_slack_id: e62912a4-3e1b-42a4-9eb7-f048ecbd7d93
-    run_as:
-      service_principal_name: b92f32fc-057f-49d5-b346-90e7e1f6a91a
   int:
     mode: development
     workspace:
@@ -78,8 +76,6 @@ targets:
       config_path: ${workspace.file_path}/configs
       catalog: eun_int_906_dh_data_db
       datahub_alert_slack_id: cc925411-cc20-4f05-bd7c-790c4af9db9c
-    run_as:
-      service_principal_name: 38c8ad6d-967d-435c-88de-d2e98334c6d2
   ppe:
     mode: development
     workspace:
@@ -98,8 +94,6 @@ targets:
       config_path: ${workspace.file_path}/configs
       catalog: eun_ppe_906_dh_data_db
       datahub_alert_slack_id: d534039f-9695-4857-a4ac-1243329a6b03
-    run_as:
-      service_principal_name: 1ea2e3ad-34b5-4d05-a58d-432e7662485f
   prod:
     mode: development
     workspace:
@@ -118,5 +112,3 @@ targets:
       config_path: ${workspace.file_path}/configs
       catalog: eun_prod_906_dh_data_db
       datahub_alert_slack_id: ab417b62-e3a7-4b90-9d89-15c9e836ac8e
-    run_as:
-      service_principal_name: 6dbd2725-9785-47eb-9471-330e2741dbde
