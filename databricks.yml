@@ -1,5 +1,5 @@
 bundle:
-  name: dp-core
+  name: dp-core-v1
 
 artifacts:
   dp_lib:
