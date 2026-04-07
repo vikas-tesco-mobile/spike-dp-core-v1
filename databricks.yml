@@ -1,0 +1,122 @@
+bundle:
+  name: dp-core
+
+artifacts:
+  dp_lib:
+    type: whl
+    build: poetry build
+
+include:
+  - workflows/*.yml
+  - workflows/*/*.yml
+
+sync:
+  include:
+    - configs/
+
+variables:
+  profile:
+    description: "The deployment profile (dev, int, local, prod)"
+  config_path:
+    description: "Path to configuration files"
+  catalog:
+    description: "Unity Catalog name"
+  datahub_alert_slack_id:
+    description: "The notification destination id for datahub alerts"
+
+targets:
+  local:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-7405612648424970.10.azuredatabricks.net
+      root_path: /Workspace/Users/${workspace.current_user.userName}/local-bundle/${bundle.name}
+      file_path: ${workspace.root_path}/files
+    permissions:
+        - group_name: users
+          level: CAN_VIEW
+    variables:
+      profile: local
+      config_path: ${workspace.file_path}/configs
+      catalog: eun_dev_906_dh_data_db
+      datahub_alert_slack_id: e62912a4-3e1b-42a4-9eb7-f048ecbd7d93
+  dev:
+    mode: development
+    workspace:
+      host: https://adb-7405612648424970.10.azuredatabricks.net
+      root_path: /Workspace/Users/${workspace.current_user.userName}/dev-bundle/${bundle.name}
+      file_path: ${workspace.root_path}/files
+    permissions:
+        - group_name: users
+          level: CAN_VIEW
+        - group_name: Databricks-AZ-906-DEV-APP-1-DBW-Datahub-DataEngineers
+          level: CAN_MANAGE
+        - group_name: eun-dev-906-dh-catalog-owners
+          level: CAN_MANAGE
+    variables:
+      profile: dev
+      config_path: ${workspace.file_path}/configs
+      catalog: eun_dev_906_dh_data_db
+      datahub_alert_slack_id: e62912a4-3e1b-42a4-9eb7-f048ecbd7d93
+    run_as:
+      service_principal_name: b92f32fc-057f-49d5-b346-90e7e1f6a91a
+  int:
+    mode: development
+    workspace:
+      host: https://adb-7405615222768992.12.azuredatabricks.net
+      root_path: /Workspace/Users/${workspace.current_user.userName}/int-bundle/${bundle.name}
+      file_path: ${workspace.root_path}/files
+    permissions:
+        - group_name: users
+          level: CAN_VIEW
+        - group_name: Databricks-AZ-906-DEV-APP-1-DBW-Datahub-DataEngineers
+          level: CAN_MANAGE
+        - group_name: eun-int-906-dh-catalog-owners
+          level: CAN_MANAGE
+    variables:
+      profile: int
+      config_path: ${workspace.file_path}/configs
+      catalog: eun_int_906_dh_data_db
+      datahub_alert_slack_id: cc925411-cc20-4f05-bd7c-790c4af9db9c
+    run_as:
+      service_principal_name: 38c8ad6d-967d-435c-88de-d2e98334c6d2
+  ppe:
+    mode: development
+    workspace:
+      host: https://adb-7405605425276996.16.azuredatabricks.net
+      root_path: /Workspace/Users/${workspace.current_user.userName}/ppe-bundle/${bundle.name}
+      file_path: ${workspace.root_path}/files
+    permissions:
+        - group_name: users
+          level: CAN_VIEW
+        - group_name: Databricks-AZ-906-PROD-APP-1-DBW-Datahub-DataEngineers
+          level: CAN_MANAGE
+        - group_name: eun-ppe-906-dh-catalog-owners
+          level: CAN_MANAGE
+    variables:
+      profile: ppe
+      config_path: ${workspace.file_path}/configs
+      catalog: eun_ppe_906_dh_data_db
+      datahub_alert_slack_id: d534039f-9695-4857-a4ac-1243329a6b03
+    run_as:
+      service_principal_name: 1ea2e3ad-34b5-4d05-a58d-432e7662485f
+  prod:
+    mode: development
+    workspace:
+      host: https://adb-7405616830679174.14.azuredatabricks.net
+      root_path: /Workspace/Users/${workspace.current_user.userName}/prod-bundle/${bundle.name}
+      file_path: ${workspace.root_path}/files
+    permissions:
+        - group_name: users
+          level: CAN_VIEW
+        - group_name: Databricks-AZ-906-PROD-APP-1-DBW-Datahub-DataEngineers
+          level: CAN_MANAGE
+        - group_name: eun-prod-906-dh-catalog-owners
+          level: CAN_MANAGE
+    variables:
+      profile: prod
+      config_path: ${workspace.file_path}/configs
+      catalog: eun_prod_906_dh_data_db
+      datahub_alert_slack_id: ab417b62-e3a7-4b90-9d89-15c9e836ac8e
+    run_as:
+      service_principal_name: 6dbd2725-9785-47eb-9471-330e2741dbde
