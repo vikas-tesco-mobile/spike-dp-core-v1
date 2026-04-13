@@ -62,3 +62,19 @@ spike-dp-core                          spike-dp-analysts
          v                                     v
    Silver tables  ---- trigger ---->   dbt builds gold tables
 ```
+
+## Observations
+
+- Responsibilities are clearly split. This repo owns ingestion, bronze/silver processing, schemas, and operational workflows, while analysts owns dbt and gold-layer workflows.
+- The integration contract is the silver layer. That gives this repo strong ownership of upstream data structure and refresh behavior.
+- Deployment is self-contained for core. The repo can build its wheel and deploy its own bundle without waiting for analysts bundle changes.
+- This approach works well when the main reuse mechanism is shared datasets rather than shared Python execution across repos.
+- Operational ownership is easier to explain: if the issue is in bronze or silver generation, it belongs here; if it is in dbt gold modeling, it belongs in analysts.
+
+## Limitations
+
+- Downstream compatibility is not version-pinned. A change to silver schemas or semantics can affect analysts immediately after deployment if the contract is not carefully managed.
+- This repo still builds a wheel, but that wheel is not the primary cross-repo contract in approach 1, so some packaging effort provides less integration value than in a library-based approach.
+- End-to-end validation requires coordination with analysts because local success in this repo does not prove that downstream dbt workflows still work.
+- Data contract changes need stronger discipline around schema evolution, backward compatibility, and deployment sequencing.
+- Compared with a shared-library model, it is harder to make code-level reuse explicit because the repos integrate mainly through tables and workflow triggers.
